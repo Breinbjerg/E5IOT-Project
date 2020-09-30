@@ -42,7 +42,7 @@ void setup()
   BUTTON_PRESSED = false;
   // Counter for data array
   count = 0;
-  // Setup sleep mode and duration  
+  // Setup sleep mode. Wakes up by button press or time  
   config1.mode(SystemSleepMode::ULTRA_LOW_POWER)
       .duration(9500ms)
       .gpio(BUTTON, FALLING);
