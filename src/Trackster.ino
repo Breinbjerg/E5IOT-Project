@@ -1,7 +1,7 @@
 /*
  * Project Trackster
  * Description: Code for IoT device "Trackster"
- * Author: thomas Serup 
+ * Author: Thomas Serup 
  */
 #include <Adafruit_GPS.h>
 #define GPSSerial Serial1
@@ -40,8 +40,6 @@ void setup()
   attachInterrupt(BUTTON, handler, FALLING);
   // Button not pressed
   BUTTON_PRESSED = false;
-  // Counter for data array
-  count = 0;
   // Setup sleep mode. Wakes up by button press or time  
   config1.mode(SystemSleepMode::ULTRA_LOW_POWER)
       .duration(9500ms)
@@ -69,11 +67,14 @@ void loop()
 {
   init();
   tracking();
+  send();
 }
 
 void tracking(void)
 {
   digitalWrite(boardLED, LOW);
+   // Counter for data array
+  count = 0;
 
   while(1)
   {
@@ -101,6 +102,7 @@ void tracking(void)
     // Enters if button has been pressed and print out to serial
     if(BUTTON_PRESSED)
     { 
+      delay(500);
       BUTTON_PRESSED = false;
       return;
     }
