@@ -16,6 +16,8 @@ void init(void);
 void tracking(void);
 // Function for sending the data to the cloud
 void send(void);
+// Function for converting the coordinates to DD instead of DMM
+float conv_coords(float f);
 // Check if button has been pressed 
 boolean BUTTON_PRESSED;
 // Connect to the GPS on the hardware port
@@ -92,7 +94,7 @@ void tracking(void)
         {
           timer = millis(); // reset the timer 
           // Save latest data in array
-          coords[count] = String(GPS.latitude, 4) +  GPS.lat + " " + String(GPS.longitude, 4) + GPS.lon;
+          coords[count] = String(conv_coords(GPS.latitude), 4) + "," + String(conv_coords(GPS.longitude), 4);
           count++;
           // Put device to sleep for 9.5 sec.
           System.sleep(config1); 
@@ -154,4 +156,13 @@ void send()
   // Print out all logged coordinates
   for(int n = 0; n < count; n++)
     Serial.println(coords[n]);
+}
+
+float conv_coords(float f)
+{
+  // Get the first two digits by turning f into an integer, then doing an integer divide by 100;
+  int firsttwodigits = ((int)f)/100;
+  float nexttwodigits = f - (float)(firsttwodigits*100);
+  float theFinalAnswer = (float)(firsttwodigits + nexttwodigits/60.0);
+  return theFinalAnswer;
 }
