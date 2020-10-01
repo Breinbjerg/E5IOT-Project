@@ -36,7 +36,7 @@ void setup()
 { 
   // Setup pinMode for button 
   pinMode(BUTTON, INPUT_PULLUP);
-  // Setup pinMode for D7 onboard LED
+  // Setup pinMode for board LED 
   pinMode(boardLED, OUTPUT);
   // Setup interrupt for pin D2
   attachInterrupt(BUTTON, handler, FALLING);
@@ -61,7 +61,8 @@ void setup()
   GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ); // Once every sec. 
   // Set position FIX update rate
   GPS.sendCommand(PMTK_API_SET_FIX_CTL_1HZ); // Once every sec.
- 
+  // take control of the LED
+  RGB.control(true);
   delay(1000);
 }
 
@@ -74,8 +75,8 @@ void loop()
 
 void tracking(void)
 {
-  digitalWrite(boardLED, LOW);
-   // Counter for data array
+  RGB.color(0, 0, 0);
+  // Counter for data array
   count = 0;
 
   while(1)
@@ -96,14 +97,20 @@ void tracking(void)
           // Save latest data in array
           coords[count] = String(conv_coords(GPS.latitude), 4) + "," + String(conv_coords(GPS.longitude), 4);
           count++;
+          // Turn board LED off
+          digitalWrite(boardLED, LOW);
           // Put device to sleep for 9.5 sec.
-          System.sleep(config1); 
+          System.sleep(config1);
+          // Turn board LED on 
+          digitalWrite(boardLED, HIGH); 
         }
       } 
     }  
     // Enters if button has been pressed and print out to serial
     if(BUTTON_PRESSED)
     { 
+      // Turn board LED off
+      digitalWrite(boardLED, LOW);
       delay(500);
       BUTTON_PRESSED = false;
       return;
@@ -118,8 +125,9 @@ void handler()
 
 void init()
 {
+  // Set LED to yellow
+  RGB.color(255, 255, 0);
   WiFi.off();
-  digitalWrite(boardLED, LOW);
 
   while(1)
   {
@@ -134,6 +142,9 @@ void init()
         // When GPS is connected to satellites  
         if(GPS.fix)
         {
+          // Turn off LED
+          RGB.color(0, 0, 0);
+          // Turn board LED on
           digitalWrite(boardLED, HIGH);
           // Put device to sleep until button is pressed
           System.sleep(config2);
@@ -149,6 +160,8 @@ void init()
 
 void send()
 {
+  // Set LED to green
+  RGB.color(0, 255, 0);
   WiFi.on();
   // Wait for WiFI connection 
   WiFi.connect();
@@ -156,6 +169,8 @@ void send()
   // Print out all logged coordinates
   for(int n = 0; n < count; n++)
     Serial.println(coords[n]);
+  // Set LED to off
+  RGB.color(0, 0, 0);
 }
 
 float conv_coords(float f)
