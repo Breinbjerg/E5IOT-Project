@@ -95,7 +95,7 @@ void tracking(void)
         {
           timer = millis(); // reset the timer 
           // Save latest data in array
-          coords[count] = String(conv_coords(GPS.latitude), 4) + "," + String(conv_coords(GPS.longitude), 4);
+          coords[count] = "|" + String(conv_coords(GPS.latitude), 4) + "," + String(conv_coords(GPS.longitude), 4);
           count++;
           // Turn board LED off
           digitalWrite(boardLED, LOW);
@@ -160,15 +160,32 @@ void init()
 
 void send()
 {
-  // Set LED to green
-  RGB.color(0, 255, 0);
+  // Set LED to red
+  RGB.color(255, 0, 0);
   WiFi.on();
-  // Wait for WiFI connection 
+  //Connect to WiFI 
   WiFi.connect();
-  delay(5000);
-  // Print out all logged coordinates
+  // Wait for WiFi to be ready 
+  while(!WiFi.ready());
+
+  // Create string with all logged coordinates
+  String path = "";
   for(int n = 0; n < count; n++)
-    Serial.println(coords[n]);
+    path += coords[n]; 
+  // Print out 'path' to debug
+  Serial.println(path);
+  
+  // Path containing test coordinates
+  String path_test = "|56.0961,8.6107|56.0979,8.6114|56.0965,8.6264|56.0950,8.6295|56.0972,8.6107";
+  String final = "https://maps.googleapis.com/maps/api/staticmap?size=600x400&path=color:0xff0000ff|weight:5" + path_test + "&key=AIzaSyC3WoXkULYQTKwO3bRNlboEQAVWnP80aRM";
+
+  // Connect to cloud
+  Particle.connect();
+  // Wait for device to connect to cloud
+  delay(30000);
+  // Publish to mailGun sending it to predefined mail-address
+  Particle.publish("mail_event", final, PRIVATE);
+  
   // Set LED to off
   RGB.color(0, 0, 0);
 }
