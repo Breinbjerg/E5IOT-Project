@@ -5,7 +5,7 @@ When you take the device on a run, at the end of the trip you will receive an em
 ### Built with:
 This project is build with:
 - Argon (Particle) - electrical base  
-- GPS-module - to track user lokation  
+- Adafruit Ultimate GPS - to track user lokation  
 - LCD Screen - to inform the user
 - Google maps API - to generate route on map
 - Mailgun API - for sending map to user 
@@ -18,7 +18,7 @@ This project is build with:
 No info until at least something is ready
 
 ### Testing
-#### Google maps static created from data delivered from adafruit-GPS:
+#### Google maps static created from data delivered from Adafruit-GPS:
 ![maptest](https://user-images.githubusercontent.com/54310610/95438638-daf10c80-0956-11eb-8b51-4769589d861c.png)
 
 ### Authors:
