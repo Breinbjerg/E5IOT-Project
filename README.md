@@ -11,14 +11,14 @@ This project is build with:
 - LiPo battery - for powering the device  
 
 ## Rich Picture:
-<img src="Images/Richpicture.png" width="700" height="400">
+<img src="Images/Richpicture.png" width="800" height="450">
 
 ## Deployment:
 No info until at least something is ready
 
 ## Testing
 #### Google maps static created from data delivered from Adafruit-GPS:
-<img src="Images/maptest.png" width="600" height="400">
+<img src="Images/maptest.png" width="500" height="400">
 
 ## Authors:
 Thomas Serup  
