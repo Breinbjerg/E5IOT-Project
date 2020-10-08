@@ -6,7 +6,6 @@ When you take the device on a run, at the end of the trip you will receive an em
 This project is build with:
 - Argon (Particle) - electrical base  
 - Adafruit Ultimate GPS - to track user lokation  
-- LCD Screen - to inform the user
 - Google maps API - to generate route on map
 - Mailgun API - for sending map to user 
 - LiPo battery - for powering the device  
