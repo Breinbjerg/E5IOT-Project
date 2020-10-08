@@ -18,8 +18,7 @@ This project is build with:
 - LiPo battery - for powering the device  
 
 ### Rich Picture:
-![Richpicture](https://user-images.githubusercontent.com/54310610/93212322-bee8b980-f762-11ea-8a35-3daf0269ccdd.png)
-
+![Richpicture](https://user-images.githubusercontent.com/54310610/95437970-fa3b6a00-0955-11eb-83a6-c262c9217a3c.png)
   
 ### Authors:
 Thomas Serup  
