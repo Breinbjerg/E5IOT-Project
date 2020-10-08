@@ -11,7 +11,7 @@ This project is build with:
 - LiPo battery - for powering the device  
 
 ## Rich Picture:
-![Richpicture](https://user-images.githubusercontent.com/54310610/95437970-fa3b6a00-0955-11eb-83a6-c262c9217a3c.png)
+<img source=Images/Richpicture.png width=100 height=50>
 ![](/Images/Richpicture.png)
 ## Deployment:
 No info until at least something is ready
