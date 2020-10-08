@@ -18,8 +18,8 @@ This project is build with:
 No info until at least something is ready
 
 ### Testing
-#### Google maps static:
-
+#### Google maps static created from data delivered from adafruit-GPS:
+![maptest](https://user-images.githubusercontent.com/54310610/95438638-daf10c80-0956-11eb-8b51-4769589d861c.png)
 
 ### Authors:
 Thomas Serup  
