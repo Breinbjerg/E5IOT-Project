@@ -177,7 +177,8 @@ void send()
   
   // Path containing test coordinates
   String path_test = "|56.0961,8.6107|56.0979,8.6114|56.0965,8.6264|56.0950,8.6295|56.0972,8.6107";
-  String final = "https://maps.googleapis.com/maps/api/staticmap?size=600x400&path=color:0xff0000ff|weight:5" + path_test + "&key=AIzaSyC3WoXkULYQTKwO3bRNlboEQAVWnP80aRM";
+  // String to send. Use path for actual route, or test_path for testing
+  String final = "https://maps.googleapis.com/maps/api/staticmap?size=600x400&path=color:0xff0000ff|weight:5" + path + "&key=AIzaSyC3WoXkULYQTKwO3bRNlboEQAVWnP80aRM";
 
   // Connect to cloud
   Particle.connect();
