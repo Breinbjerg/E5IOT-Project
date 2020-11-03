@@ -8,93 +8,54 @@
 #define BUTTON D2
 #define boardLED D7
 
-// Avoid starting up wifi and connection wtih cloud
-SYSTEM_MODE(SEMI_AUTOMATIC);
+SYSTEM_MODE(SEMI_AUTOMATIC);                    // Avoid starting up wifi and connection with cloud
 
-// Interrupt handler
-void handler(void);
+void handler(void);                             // Interrupt handler
+void init(void);                                // Initial function getting fix signal and wait for start signal (button press)
+void tracking(void);                            // Function for tracking the route
+void send(void);                                // Create string from coordinates to send to mail
+float conv_coords(float);                       // Converting the coordinates to DD instead of DMM
+void SendMail(String);                          // TCP Client to send SMTP mail
+void blink_green(void);                         // RGB-LED Blink function when button is pressed
 
-// Initial function for getting fix signal and wait for start signal (button press)
-void init(void); 
-
-// Function for tracking the route
-void tracking(void);
-
-// Function for sending the data to the cloud
-void send(void);
-
-// Function for converting the coordinates to DD instead of DMM
-float conv_coords(float f);
-
-// TCP Client
-void SendMail(String);
-
-// Blink function when button is pressed
-void blink3(void);
-
-// Check if button has been pressed 
-boolean BUTTON_PRESSED;
-
-// Connect to the GPS on the hardware port
-Adafruit_GPS GPS(&GPSSerial);
-
-// Milliseconds since device was started
-uint32_t timer = millis();
-
-// Counting up the data array
-int count;
-
-// Data array
-String coords[1000];
-
-// Create config variables for different sleepmodes
-SystemSleepConfiguration config1, config2;
-
-// Implementing tcp class
-TCPClient client;
+boolean BUTTON_PRESSED;                         // Check if button has been pressed 
+Adafruit_GPS GPS(&GPSSerial);                   // Connect to the GPS on the hardware port
+uint32_t timer = millis();                      // Milliseconds since device was started
+int count;                                      // Counting up the data array
+String coords[1000];                            // Data array holding all coordinates
+SystemSleepConfiguration config1, config2;      // Create config variables for different sleepmodes
+TCPClient client;                               // Implementing tcp class
 
 void setup()
 { 
-  //***************** Pin setup for LED and button ******************
-  // Setup pinMode for button 
-  pinMode(BUTTON, INPUT_PULLUP);
-  // Setup pinMode for board LED 
-  pinMode(boardLED, OUTPUT);
-  // Setup interrupt for pin D2
-  attachInterrupt(BUTTON, handler, FALLING);
-  // Button not pressed
-  BUTTON_PRESSED = false;
+  //************************** PIN SETUP ****************************************
+  pinMode(BUTTON, INPUT_PULLUP);                // Setup pinMode for button 
+  pinMode(boardLED, OUTPUT);                    // Setup pinMode for board LED
+  attachInterrupt(BUTTON, handler, FALLING);    // Setup interrupt for pin D2
+  BUTTON_PRESSED = false;                       // Button not pressed
 
- //************************ Sleep modes ******************************
-  // Setup sleep mode. Wakes up by button press or time  
-  config1.mode(SystemSleepMode::ULTRA_LOW_POWER)
+ //************************** SLEEP-MODES ***************************************  
+  config1.mode(SystemSleepMode::ULTRA_LOW_POWER)// Wakes up by button press or time
       .duration(9500ms)
       .gpio(BUTTON, FALLING);
-  // Setup new sleepmode, woken up by button press 
-  config2.mode(SystemSleepMode::ULTRA_LOW_POWER)
+
+  config2.mode(SystemSleepMode::ULTRA_LOW_POWER)// Wakes up by button press 
       .gpio(BUTTON, FALLING);
   
-  //************************** Debugging *****************************
-  // connect at 115200 so we can read the GPS fast enough and echo without dropping chars
-  Serial.begin(115200);
+  //************************** DEBUGGING ****************************************
+  Serial.begin(115200);                         // connect at baud rate 115200 
 
-  //************************* GPS setup ******************************
-  // Set serial port baud rate to 9600 
-  GPSSerial.begin(9600);
-  // 9600 NMEA is the default baud rate for Adafruit MTK GPS's
-  GPS.begin(9600);
-  // Turn on only the "minimum recommended" data
-  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
-  // Set the update rate
-  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ); // Once every sec. 
-  // Set position FIX update rate
-  GPS.sendCommand(PMTK_API_SET_FIX_CTL_1HZ); // Once every sec.
+  //************************** GPS SETUP **************************************** 
+  GPSSerial.begin(9600);                        // Set serial port baud rate to 9600
+  GPS.begin(9600);                              // 9600 NMEA is the default baud rate for Adafruit MTK GPS's 
+  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);// Turn on only the "minimum recommended" data
+  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);    // Set the update rate to once every sec. 
+  GPS.sendCommand(PMTK_API_SET_FIX_CTL_1HZ);    // Set position FIX update rate to once every sec.
   
-  //*************************** LED setup ****************************
-  // take control of the RGB-LED
-  RGB.control(true);
-  // Set board LED high to show system is on
-  digitalWrite(boardLED, HIGH);
+  //*************************** LED SETUP ***************************************
+  RGB.control(true);                            // take control of the RGB-LED
+  digitalWrite(boardLED, HIGH);                 // Set board LED high to show system is on
+
   delay(1000);
 }
 
@@ -135,7 +96,7 @@ void init()
           System.sleep(config2);
 
           // Avoid debouncing
-          blink3();
+          blink_green();
           BUTTON_PRESSED = false;
           return;  
         }
@@ -178,7 +139,7 @@ void tracking(void)
     if(BUTTON_PRESSED)
     { 
       // Blink LED
-      blink3();
+      blink_green();
       BUTTON_PRESSED = false;
       return;
     }
@@ -193,8 +154,13 @@ void send()
   //Connect to WiFI 
   WiFi.connect();
   // Wait for WiFi to be ready 
-  while(!WiFi.ready());
-
+  while(!WiFi.ready()){
+    RGB.color(255, 0, 0);
+    delay(200);
+    RGB.color(0, 0, 0);
+    delay(200);
+  };
+  
   // Create string with all logged coordinates
   String path = "";
   for(int n = 0; n < count; n++)
@@ -227,7 +193,7 @@ void SendMail(String path)
     Serial.println("connected"); 
     client.println("EHLO 185.182.204.219");
     client.println("AUTH PLAIN");
-    client.println("**************************************");
+    client.println("AHBvc3RtYXN0ZXJAc2FuZGJveGM1ZWNhYTg5ZWI1ZTRhM2M4NDFmZTE5OTA3ZmY1ZGQ5Lm1haWxndW4ub3JnADNhZThmNzNjOWJkNzc2NDViZTgxM2M3ZmZmMWQzYjBmLTliMWJmNWQzLTQ5Yjc1ODM1");
     client.println("MAIL FROM:<particle@sandbox74891f94361d48bf8fa4f94ebb06d09e.mailgun.org>");
     client.println("RCPT TO:<thomas.serup80@gmail.com>");
     client.println("DATA");  
@@ -261,7 +227,7 @@ void SendMail(String path)
   }
 }
 
-void blink3(void)
+void blink_green(void)
 {
   RGB.color(0, 255, 0);
   delay(200);

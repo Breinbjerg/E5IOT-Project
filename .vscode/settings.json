@@ -5,5 +5,5 @@
     "files.associations": {
         "*.ino": "cpp"
     },
-    "particle.firmwareVersion": "2.0.0-rc.3"
+    "particle.firmwareVersion": "2.0.0-rc.4"
 }
