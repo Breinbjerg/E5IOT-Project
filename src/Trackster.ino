@@ -6,19 +6,24 @@
 #include <Adafruit_GPS.h>
 #define GPSSerial Serial1
 #define BUTTON D2
+#define BATT D3
 #define boardLED D7
+#define BATTERY A1
 
 SYSTEM_MODE(SEMI_AUTOMATIC);                    // Avoid starting up wifi and connection with cloud
 
 void handler(void);                             // Interrupt handler
+void batt_handler(void);                        // Interrupt handler
 void init(void);                                // Initial function getting fix signal and wait for start signal (button press)
 void tracking(void);                            // Function for tracking the route
 void send(void);                                // Create string from coordinates to send to mail
 float conv_coords(float);                       // Converting the coordinates to DD instead of DMM
 void SendMail(String);                          // TCP Client to send SMTP mail
 void blink_green(void);                         // RGB-LED Blink function when button is pressed
+void read_battery(void);                        // Read analog pin to get battery level
 
-boolean BUTTON_PRESSED;                         // Check if button has been pressed 
+boolean BUTTON_PRESSED;                         // Check if button has been pressed
+boolean BATT_PRESSED;                           // Check if battery button has been pressed 
 Adafruit_GPS GPS(&GPSSerial);                   // Connect to the GPS on the hardware port
 uint32_t timer = millis();                      // Milliseconds since device was started
 int count;                                      // Counting up the data array
@@ -29,18 +34,23 @@ TCPClient client;                               // Implementing tcp class
 void setup()
 { 
   //************************** PIN SETUP ****************************************
-  pinMode(BUTTON, INPUT_PULLUP);                // Setup pinMode for button 
+  pinMode(BUTTON, INPUT_PULLUP);                // Setup pinMode for button
+  pinMode(BATT, INPUT_PULLUP);                  // Setup pinMode for battery button 
   pinMode(boardLED, OUTPUT);                    // Setup pinMode for board LED
   attachInterrupt(BUTTON, handler, FALLING);    // Setup interrupt for pin D2
+  attachInterrupt(BATT, batt_handler, FALLING); // Setup interrupt for pin D2
   BUTTON_PRESSED = false;                       // Button not pressed
+  BATT_PRESSED = false;                         // Battery button not pressed
 
  //************************** SLEEP-MODES ***************************************  
   config1.mode(SystemSleepMode::ULTRA_LOW_POWER)// Wakes up by button press or time
       .duration(9500ms)
-      .gpio(BUTTON, FALLING);
+      .gpio(BUTTON, FALLING)
+      .gpio(BATT, FALLING);                     // Get battery status
 
   config2.mode(SystemSleepMode::ULTRA_LOW_POWER)// Wakes up by button press 
-      .gpio(BUTTON, FALLING);
+      .gpio(BUTTON, FALLING)
+      .gpio(BATT, FALLING);                     // Get battery status
   
   //************************** DEBUGGING ****************************************
   Serial.begin(115200);                         // connect at baud rate 115200 
@@ -55,7 +65,6 @@ void setup()
   //*************************** LED SETUP ***************************************
   RGB.control(true);                            // take control of the RGB-LED
   digitalWrite(boardLED, HIGH);                 // Set board LED high to show system is on
-
   delay(1000);
 }
 
@@ -69,6 +78,11 @@ void loop()
 void handler()
 {
   BUTTON_PRESSED = true; 
+}
+
+void batt_handler()
+{
+  BATT_PRESSED = true; 
 }
 
 void init()
@@ -95,10 +109,17 @@ void init()
           // Put device to sleep until button is pressed
           System.sleep(config2);
 
-          // Avoid debouncing
-          blink_green();
-          BUTTON_PRESSED = false;
-          return;  
+          // Goes in here if button D2 has been pressed
+          if(BUTTON_PRESSED)
+          {
+            // Avoid debouncing
+            blink_green();
+            BUTTON_PRESSED = false;
+            return;
+          }
+          // Else it must have been the other button
+          read_battery();
+          BATT_PRESSED = false;      
         }
       }
     }
@@ -125,6 +146,8 @@ void tracking(void)
         // approximately every 10 seconds or so, save the coordinates
         if (millis() - timer > 10000) 
         {
+          RGB.color(0, 255, 0); // Turn back on green if read_battery has been called
+
           timer = millis(); // reset the timer 
           // Save latest data in array
           coords[count] = "|" + String(conv_coords(GPS.latitude), 4) + "," + String(conv_coords(GPS.longitude), 4);
@@ -134,7 +157,14 @@ void tracking(void)
           System.sleep(config1); 
         }
       } 
-    }  
+    }
+    // Enter if battery button has been pressed
+    if(BATT_PRESSED)
+    {
+      read_battery();
+      BATT_PRESSED = false; 
+    } 
+
     // Enters if button has been pressed
     if(BUTTON_PRESSED)
     { 
@@ -239,5 +269,31 @@ void blink_green(void)
   delay(200);
   RGB.color(0, 255, 0);
   delay(200);
+  RGB.color(0, 0, 0);
+}
+
+void read_battery()
+{
+  // Equal size resistors in voltage devider gives half the voltage 
+  // (Half the voltage)/(resolution)
+  // Fx 4V: (4/2)/(3.3/4096) = 2500 
+  #define LOWEST 1875                         // ADC Value where light suppose to be red
+  #define HIGEST 2550                         // ADC Value where light suppose to be green
+
+  int battery = analogRead(BATTERY);          // Read analog value between 0 and 4095. 12-bit resolution
+  int factor = (255*10)/(HIGEST-LOWEST);      // Multiply by 10 to avoid floats 
+  int val = ((battery - LOWEST)*(factor))/10; // Devide by 10 to return to original scale
+  
+  if(val < 0)                                 // Keep value within 0-255
+    val = 0;
+  if(val > 255)
+    val = 255;
+    
+  int green = val;                            // High value, high green
+  int red = 255-val;                          // High value, low red  
+      
+  RGB.color(red, green, 0);
+  
+  delay(1500);                                // Show battery status for 1.5 sec.
   RGB.color(0, 0, 0);
 }
