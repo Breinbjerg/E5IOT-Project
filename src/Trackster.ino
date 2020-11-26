@@ -226,11 +226,11 @@ void SendMail(String path)
     Serial.println("connected"); 
     client.println("EHLO 185.182.204.219");
     client.println("AUTH PLAIN");
-    client.println("");
-    client.println("MAIL FROM:<particle@sandbox74891f94361d48bf8fa4f94ebb06d09e.mailgun.org>");
+    client.println("LINE1");
+    client.println("MAIL FROM:LINE2");
     client.println("RCPT TO:<thomas.serup80@gmail.com>");
     client.println("DATA");  
-    client.println("From: Trackster <particle@sandbox74891f94361d48bf8fa4f94ebb06d09e.mailgun.org>");
+    client.println("From: Trackster LINE2");
     client.println("Subject: Your route");
     client.println("To: Thomas <thomas.serup80@gmail.com>");
     client.println();
