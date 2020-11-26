@@ -21,7 +21,7 @@ No info until at least something is ready
 <img src="Images/maptest.png" width="500" height="400">
 
 ## Battery discharge
-### Battery discharged from 4.05V in 52 hours:
+#### Battery discharged from 4.05V in 52 hours:
 <img src="Images/discharge.png" width="900" height="300">
 
 ## Authors:
