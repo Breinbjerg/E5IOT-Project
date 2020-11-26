@@ -25,7 +25,7 @@ No info until at least something is ready
 <img src="Images/discharge.png">
 
 ## PCB 
-#### Schematic: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Mounted:
+#### Schematic: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Mounted:
 <img src="Images/Schematic.png">  <img src="Images/pcb.png" width="300" height="400">
   
 ## Authors:
