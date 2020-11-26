@@ -20,6 +20,9 @@ No info until at least something is ready
 #### Google maps static created from data delivered from Adafruit-GPS:
 <img src="Images/maptest.png" width="500" height="400">
 
+## Battery discharge
+<img src="Images/maptest.png" width="500" height="400">
+
 ## Authors:
 Thomas Serup  
 Steffen Breinbjerg
