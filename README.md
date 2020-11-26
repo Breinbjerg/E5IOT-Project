@@ -25,13 +25,8 @@ No info until at least something is ready
 <img src="Images/discharge.png">
 
 ## PCB 
-#### Schematic &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and Mounted:
+#### Schematic &nbsp;<br />        Mounted:
 <img src="Images/Schematic.png">  <img src="Images/pcb.png" width="300" height="400">
-
-The action of every agent <br />
-  into the world <br />
-starts <br />
-  from their physical selves. <br />
   
 ## Authors:
 Thomas Serup  
