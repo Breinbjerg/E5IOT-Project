@@ -28,6 +28,11 @@ No info until at least something is ready
 #### Schematic &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and Mounted:
 <img src="Images/Schematic.png">  <img src="Images/pcb.png" width="300" height="400">
 
+The action of every agent <br />
+  into the world <br />
+starts <br />
+  from their physical selves. <br />
+  
 ## Authors:
 Thomas Serup  
 Steffen Breinbjerg
