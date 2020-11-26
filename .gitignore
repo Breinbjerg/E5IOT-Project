@@ -5,5 +5,5 @@
 # Visual Studio
 .vscode/
 TracksterWorkspace.code-workspace
-secret.cpp
+secret.h
 project.properties
