@@ -4,7 +4,7 @@
  * Author: Thomas Serup 
  */
 #include <Adafruit_GPS.h>
-#include <secret.cpp>
+#include <secret.cpp> // Info not going to github
 #define GPSSerial Serial1
 #define BUTTON D2
 #define BATT D3
