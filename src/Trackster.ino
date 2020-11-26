@@ -4,6 +4,7 @@
  * Author: Thomas Serup 
  */
 #include <Adafruit_GPS.h>
+#include <secret.cpp>
 #define GPSSerial Serial1
 #define BUTTON D2
 #define BATT D3
@@ -226,13 +227,13 @@ void SendMail(String path)
     Serial.println("connected"); 
     client.println("EHLO 185.182.204.219");
     client.println("AUTH PLAIN");
-    client.println("LINE1");
-    client.println("MAIL FROM:LINE2");
-    client.println("RCPT TO:<thomas.serup80@gmail.com>");
+    client.println(PASSWORD);
+    client.println(MAIL_FROM);
+    client.println(MAIL_TO);
     client.println("DATA");  
-    client.println("From: Trackster LINE2");
+    client.println(FROM);
     client.println("Subject: Your route");
-    client.println("To: Thomas <thomas.serup80@gmail.com>");
+    client.println(TO);
     client.println();
     client.println("To see your route, open link below:");
     client.println("https://maps.googleapis.com/maps/api/staticmap?size=600x400&path=color:0xff0000ff|weight:5" +path+ "&key=AIzaSyC3WoXkULYQTKwO3bRNlboEQAVWnP80aRM");
