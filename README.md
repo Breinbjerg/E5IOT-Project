@@ -21,7 +21,7 @@ No info until at least something is ready
 <img src="Images/maptest.png" width="500" height="400">
 
 ## Battery discharge
-<img src="Images/maptest.png" width="500" height="400">
+<img src="Images/discharge.png" width="500" height="400">
 
 ## Authors:
 Thomas Serup  
