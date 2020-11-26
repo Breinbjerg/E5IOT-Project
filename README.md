@@ -26,7 +26,7 @@ No info until at least something is ready
 
 ## PCB 
 #### schematic:
-<img src="Images/schemaic.png">
+<img src="Images/Schematic.png">
 
 ## Authors:
 Thomas Serup  
