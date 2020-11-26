@@ -22,7 +22,7 @@ No info until at least something is ready
 
 ## Battery discharge
 #### Battery discharged from 4.05V in 52 hours:
-<img src="Images/discharge.png" width="900" height="300">
+<img src="Images/discharge.png">
 
 ## Authors:
 Thomas Serup  
