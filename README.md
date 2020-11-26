@@ -24,6 +24,10 @@ No info until at least something is ready
 #### Battery discharged from 4.05V in 52 hours:
 <img src="Images/discharge.png">
 
+## PCB 
+#### schematic:
+<img src="Images/schemaic.png">
+
 ## Authors:
 Thomas Serup  
 Steffen Breinbjerg
