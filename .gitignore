@@ -1,0 +1,6 @@
+# Template gitignore file that is housed in dotfiles/.gitignore
+# Created by https://www.gitignore.io/api/macos
+# Updated with https://github.com/github/gitignore
+
+# Visual Studio
+.vscode/

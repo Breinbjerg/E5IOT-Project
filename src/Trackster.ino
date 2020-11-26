@@ -103,6 +103,9 @@ void init()
         // When GPS is connected to satellites  
         if(GPS.fix)
         {
+          // If button has been pressed while waiting for satellittes
+          BUTTON_PRESSED = false;
+          
           // Turn off LED
           RGB.color(0, 0, 0);
           
@@ -223,7 +226,7 @@ void SendMail(String path)
     Serial.println("connected"); 
     client.println("EHLO 185.182.204.219");
     client.println("AUTH PLAIN");
-    client.println("AHBvc3RtYXN0ZXJAc2FuZGJveGM1ZWNhYTg5ZWI1ZTRhM2M4NDFmZTE5OTA3ZmY1ZGQ5Lm1haWxndW4ub3JnADNhZThmNzNjOWJkNzc2NDViZTgxM2M3ZmZmMWQzYjBmLTliMWJmNWQzLTQ5Yjc1ODM1");
+    client.println("");
     client.println("MAIL FROM:<particle@sandbox74891f94361d48bf8fa4f94ebb06d09e.mailgun.org>");
     client.println("RCPT TO:<thomas.serup80@gmail.com>");
     client.println("DATA");  
