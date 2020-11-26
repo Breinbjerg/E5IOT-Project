@@ -26,7 +26,7 @@ No info until at least something is ready
 
 ## PCB 
 #### Schematic and                   Mounted:
-<img src="Images/Schematic.png">  <img src="Images/pcb.png">
+<img src="Images/Schematic.png">  <img src="Images/pcb.png" width="500" height="400">
 
 ## Authors:
 Thomas Serup  
