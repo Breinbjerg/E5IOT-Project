@@ -26,7 +26,7 @@ No info until at least something is ready
 
 ## PCB 
 #### Schematic:
-<img src="Images/Schematic.png">
+<img src="Images/Schematic.png"><img src="Images/pcb.png">
 
 #### Mounted:
 <img src="Images/pcb.png">
