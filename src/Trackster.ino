@@ -29,7 +29,9 @@ Adafruit_GPS GPS(&GPSSerial);                   // Connect to the GPS on the har
 uint32_t timer = millis();                      // Milliseconds since device was started
 int count;                                      // Counting up the data array
 String coords[1000];                            // Data array holding all coordinates
-SystemSleepConfiguration config1, config2;      // Create config variables for different sleepmodes
+SystemSleepConfiguration config1,               // Create config variables for different sleepmodes
+                         config2, 
+                         config3;               
 TCPClient client;                               // Implementing tcp class
 
 void setup()
@@ -53,6 +55,9 @@ void setup()
       .gpio(BUTTON, FALLING)
       .gpio(BATT, FALLING);                     // Get battery status
   
+  config3.mode(SystemSleepMode::ULTRA_LOW_POWER)// Wakes up by time 
+      .duration(2000ms);
+
   //************************** DEBUGGING ****************************************
   Serial.begin(115200);                         // connect at baud rate 115200 
 
@@ -93,6 +98,14 @@ void init()
 
   while(1)
   {
+    // Once every 3rd. second it goes to sleep 
+    if (millis() - timer > 3000) 
+        {
+          // reset the timer
+          timer = millis();
+          // Put device to sleep for 2 seconds
+          System.sleep(config3); 
+        }
     // read data from the GPS
     GPS.read();
     // if a sentence is received, we can check the checksum, parse it...
@@ -150,9 +163,10 @@ void tracking(void)
         // approximately every 10 seconds or so, save the coordinates
         if (millis() - timer > 10000) 
         {
-          RGB.color(0, 255, 0); // Turn back on green if read_battery has been called
-
-          timer = millis(); // reset the timer 
+          // Turn back on green if read_battery has been called
+          RGB.color(0, 255, 0); 
+          // reset the timer
+          timer = millis();  
           // Save latest data in array
           coords[count] = "|" + String(conv_coords(GPS.latitude), 4) + "," + String(conv_coords(GPS.longitude), 4);
           count++;
@@ -225,7 +239,7 @@ void SendMail(String path)
   if (client.connect("smtp.mailgun.org", 587)) 
   { 
     Serial.println("connected"); 
-    client.println("EHLO 185.182.204.219");
+    client.println(HELLO);
     client.println("AUTH PLAIN");
     client.println(PASSWORD);
     client.println(MAIL_FROM);
