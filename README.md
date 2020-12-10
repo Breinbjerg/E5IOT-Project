@@ -23,7 +23,7 @@ This project is build with:
 
 ## PCB 
 #### Schematic: &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Mounted:
-<img src="Images/Schematic.png">  <img src="Images/pcb.png" width="300" height="400">
+<img src="Images/Schematic.png">  <img src="Images/pcb_new.png" width="300" height="400">
   
 ## Authors:
 Thomas Serup  
