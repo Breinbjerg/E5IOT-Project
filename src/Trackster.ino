@@ -198,6 +198,7 @@ void send()
 {
   // Set LED to red
   RGB.color(255, 0, 0);
+  // Turn on wi-fi module
   WiFi.on();
   //Connect to WiFI 
   WiFi.connect();
@@ -293,10 +294,10 @@ void blink_green(void)
 void read_battery()
 {
   // Equal size resistors in voltage devider gives half the voltage 
-  // (Half the voltage)/(resolution)
-  // Fx 4V: (4/2)/(3.3/4096) = 2500 
-  #define LOWEST 1875                         // ADC Value where light suppose to be red
-  #define HIGEST 2550                         // ADC Value where light suppose to be green
+  // (Half the voltage)/(resolution) 
+  // eg. 4V: (4/2)/(3.3/4096) = 2500 
+  #define LOWEST 2100                         // ADC Value where light suppose to be red
+  #define HIGEST 2500                         // ADC Value where light suppose to be green
 
   int battery = analogRead(BATTERY);          // Read analog value between 0 and 4095. 12-bit resolution
   int factor = (255*10)/(HIGEST-LOWEST);      // Multiply by 10 to avoid floats 
